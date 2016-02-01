@@ -9,6 +9,13 @@ public class CameraFollow : MonoBehaviour
 
     public Vector2 offset;
 
+    void Start()
+    {
+        //If there is no target set, attempt to find the player
+        if (!target)
+            target = GameObject.FindWithTag("Player").transform;
+    }
+
     //LateUpdate ensures camera moves within the same from as the target
     void LateUpdate()
     {

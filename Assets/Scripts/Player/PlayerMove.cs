@@ -15,10 +15,15 @@ public class PlayerMove : MonoBehaviour
     //target position in world space
     private Vector3 newPos;
 
+    private LevelInfo levelInfo;
+
     void Start()
     {
+        //Get reference to level info from the game manager
+        levelInfo = GameManager.instance.levelInfo;
+
         //Get spawn node
-        TileNode spawnNode = LevelInfo.instance.GetSpawnTile();
+        TileNode spawnNode = levelInfo.GetSpawnTile();
 
         //Start player at spawn node
         transform.position = spawnNode.worldPosition;
@@ -53,13 +58,13 @@ public class PlayerMove : MonoBehaviour
             newGridPos = new Vector2(currentGridPos.x + 1, currentGridPos.y);
 
         //If this new grid position can be walked on
-        if (LevelInfo.instance.IsTileWalkable(newGridPos))
+        if (levelInfo.IsTileWalkable(newGridPos))
         {
             //Make the current grid position into this new position
             currentGridPos = newGridPos;
 
             //Set target world position to that of the node at the new grid position
-            newPos = LevelInfo.instance.GetTile(currentGridPos).worldPosition;
+            newPos = levelInfo.GetTile(currentGridPos).worldPosition;
         }
     }
 }

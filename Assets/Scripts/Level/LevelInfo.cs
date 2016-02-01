@@ -3,9 +3,6 @@ using System.Collections;
 
 public class LevelInfo : MonoBehaviour
 {
-    //Static instance
-    public static LevelInfo instance;
-
     //2D array of level nodes
     public TileNode[,] nodes;
 
@@ -27,11 +24,6 @@ public class LevelInfo : MonoBehaviour
 
     //The prefab tile sprite to instantiate
     public GameObject groundTile;
-
-    void Awake()
-    {
-        instance = this;
-    }
 
     void Start()
     {
