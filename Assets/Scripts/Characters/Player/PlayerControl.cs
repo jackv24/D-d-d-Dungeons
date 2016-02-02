@@ -5,7 +5,7 @@ using System.Collections;
 public class PlayerControl : MonoBehaviour
 {
     //Reference to the player movement script on this gameobject
-    private PlayerMove playerMove;
+    private CharacterMove playerMove;
 
     //Ensures that keyboard inputs are only accepted on key down
     private bool acceptKeyboardInput = true;
@@ -18,7 +18,7 @@ public class PlayerControl : MonoBehaviour
 
     void Start()
     {
-        playerMove = GetComponent<PlayerMove>();
+        playerMove = GetComponent<CharacterMove>();
     }
 
     void Update()
@@ -32,25 +32,25 @@ public class PlayerControl : MonoBehaviour
     {
         if (Input.GetAxisRaw("Horizontal") > 0 && acceptKeyboardInput)
         {
-            playerMove.Move(PlayerMove.IsoDirection.Right);
+            playerMove.Move(CharacterMove.IsoDirection.Right);
 
             acceptKeyboardInput = false;
         }
         else if (Input.GetAxisRaw("Horizontal") < 0 && acceptKeyboardInput)
         {
-            playerMove.Move(PlayerMove.IsoDirection.Left);
+            playerMove.Move(CharacterMove.IsoDirection.Left);
 
             acceptKeyboardInput = false;
         }
         else if (Input.GetAxisRaw("Vertical") > 0 && acceptKeyboardInput)
         {
-            playerMove.Move(PlayerMove.IsoDirection.Up);
+            playerMove.Move(CharacterMove.IsoDirection.Up);
 
             acceptKeyboardInput = false;
         }
         else if (Input.GetAxisRaw("Vertical") < 0 && acceptKeyboardInput)
         {
-            playerMove.Move(PlayerMove.IsoDirection.Down);
+            playerMove.Move(CharacterMove.IsoDirection.Down);
 
             acceptKeyboardInput = false;
         }
@@ -81,22 +81,22 @@ public class PlayerControl : MonoBehaviour
                     Vector2 direction = endTouchPos - beganTouchPos;
 
                     //Initialise isometric direction variable
-                    PlayerMove.IsoDirection isoDirection = PlayerMove.IsoDirection.Stationary;
+                    CharacterMove.IsoDirection isoDirection = CharacterMove.IsoDirection.Stationary;
 
                     //Determine isometric direction
                     if (direction.x >= 0)
                     {
                         if (direction.y >= 0)
-                            isoDirection = PlayerMove.IsoDirection.Right;
+                            isoDirection = CharacterMove.IsoDirection.Right;
                         else if (direction.y < 0)
-                            isoDirection = PlayerMove.IsoDirection.Down;
+                            isoDirection = CharacterMove.IsoDirection.Down;
                     }
                     else if (direction.x < 0)
                     {
                         if (direction.y >= 0)
-                            isoDirection = PlayerMove.IsoDirection.Up;
+                            isoDirection = CharacterMove.IsoDirection.Up;
                         else if (direction.y < 0)
-                            isoDirection = PlayerMove.IsoDirection.Left;
+                            isoDirection = CharacterMove.IsoDirection.Left;
                     }
 
                     //Send direction to player movement script

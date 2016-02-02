@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 
     public LevelInfo levelInfo;
 
+    public GameObject player;
+
     void Awake()
     {
         //Ensures there is only one game manager
@@ -15,5 +17,11 @@ public class GameManager : MonoBehaviour
             instance = this;
         else
             Destroy(gameObject);
+    }
+
+    void Start()
+    {
+        if (!player)
+            player = GameObject.FindWithTag("Player");
     }
 }

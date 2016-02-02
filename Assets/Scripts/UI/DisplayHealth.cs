@@ -8,11 +8,11 @@ public class DisplayHealth : MonoBehaviour
 
     public Text text;
 
-    private PlayerStats stats;
+    private CharacterStats stats;
 
     void Start()
     {
-        stats = PlayerStats.instance;
+        stats = GameManager.instance.player.GetComponent<CharacterStats>();
     }
 
     void Update()

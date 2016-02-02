@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerMove : MonoBehaviour
+public class CharacterMove : MonoBehaviour
 {
     public enum IsoDirection
     {
@@ -23,9 +23,9 @@ public class PlayerMove : MonoBehaviour
         levelInfo = GameManager.instance.levelInfo;
 
         //Get spawn node
-        TileNode spawnNode = levelInfo.GetSpawnTile();
+        TileNode spawnNode = levelInfo.GetSpawnTile((gameObject.tag == "Player") ? TileNode.Type.PlayerSpawn : TileNode.Type.EnemySpawn);
 
-        //Start player at spawn node
+        //Start character at spawn node
         transform.position = spawnNode.worldPosition;
         //Set array position to spawn node
         currentGridPos = spawnNode.gridPosition;
@@ -38,10 +38,14 @@ public class PlayerMove : MonoBehaviour
     {
         //If the target position has changed, lerp smoothly to new value
         if (newPos != transform.position)
+        {
+            newPos.z = newPos.y;
+
             transform.position = Vector3.Lerp(transform.position, newPos, moveSmoothing);
+        }
     }
 
-    //Called by playercontrol
+    //Called by controller (AI or playercontrol)
     public void Move(IsoDirection dir)
     {
         //Initialise vector for grid position

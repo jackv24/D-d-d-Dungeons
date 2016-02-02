@@ -10,7 +10,7 @@ public class LevelInfo : MonoBehaviour
     public int[,] level = {
         { 0, 0, 1, 0, 0, 0 },
         { 0, 0, 1, 0, 0, 0 },
-        { 0, 0, 1, 0, 0, 0 },
+        { 0, 0, 3, 0, 0, 0 },
         { 0, 1, 1, 0, 0, 0 },
         { 0, 1, 1, 0, 0, 0 },
         { 2, 1, 1, 1, 1, 1 },
@@ -42,7 +42,9 @@ public class LevelInfo : MonoBehaviour
                 else
                 {
                     if (level[y, x] == 2)
-                        nodes[x, y] = new TileNode(TileNode.Type.Spawn, new Vector2(x, y), position);
+                        nodes[x, y] = new TileNode(TileNode.Type.PlayerSpawn, new Vector2(x, y), position);
+                    else if (level[y, x] == 3)
+                        nodes[x, y] = new TileNode(TileNode.Type.EnemySpawn, new Vector2(x, y), position);
                     else
                         nodes[x, y] = new TileNode(TileNode.Type.Ground, new Vector2(x, y), position);
 
@@ -64,13 +66,17 @@ public class LevelInfo : MonoBehaviour
     }
 
     //Searches the array for a spawn tile, and returns it
-    public TileNode GetSpawnTile()
+    public TileNode GetSpawnTile(TileNode.Type spawnType)
     {
         for (int x = 0; x < nodes.GetLength(0); x++)
         {
             for (int y = 0; y < nodes.GetLength(1); y++)
             {
-                if (nodes[x, y].type == TileNode.Type.Spawn)
+                if (spawnType == TileNode.Type.PlayerSpawn && nodes[x, y].type == TileNode.Type.PlayerSpawn)
+                {
+                    return nodes[x, y];
+                }
+                else if (spawnType == TileNode.Type.EnemySpawn && nodes[x, y].type == TileNode.Type.EnemySpawn)
                 {
                     return nodes[x, y];
                 }

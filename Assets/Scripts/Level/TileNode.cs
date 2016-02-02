@@ -4,7 +4,7 @@ using System.Collections;
 //Class to be used in 2D array (seperating level logic from displayed sprites)
 public class TileNode
 {
-    public enum Type { Blank, Ground, Spawn }
+    public enum Type { Blank, Ground, PlayerSpawn, EnemySpawn }
     //What type of node this is
     public Type type = Type.Blank;
 
