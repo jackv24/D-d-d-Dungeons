@@ -11,6 +11,11 @@ public class TileNode
     public Vector2 worldPosition;
     public Vector2 gridPosition;
 
+    //Tile occupancy
+    public bool isOccupied = false;
+    //THe game object which occupies the tile. Enemy, item, etc.
+    public GameObject occupyingGameObject;
+
     public TileNode(Type nodeType, Vector2 gridPos, Vector2 worldPos)
     {
         type = nodeType;
@@ -18,5 +23,11 @@ public class TileNode
         gridPosition = gridPos;
 
         worldPosition = worldPos;
+    }
+
+    public void Clear()
+    {
+        isOccupied = false;
+        occupyingGameObject = null;
     }
 }

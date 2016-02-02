@@ -10,6 +10,8 @@ public class CharacterMove : MonoBehaviour
 
     public float moveSmoothing = 0.1f;
 
+    public TileNode spawnNode = null;
+
     //Current position on the 2d array (should always be integer values)
     public Vector2 currentGridPos = Vector2.zero;
     //target position in world space
@@ -22,13 +24,14 @@ public class CharacterMove : MonoBehaviour
         //Get reference to level info from the game manager
         levelInfo = GameManager.instance.levelInfo;
 
-        //Get spawn node
-        TileNode spawnNode = levelInfo.GetSpawnTile((gameObject.tag == "Player") ? TileNode.Type.PlayerSpawn : TileNode.Type.EnemySpawn);
+        //Get spawn node if player, enemies are set when spawned
+        if(tag == "Player")
+            spawnNode = levelInfo.GetSpawnTile(TileNode.Type.PlayerSpawn);
 
         //Start character at spawn node
         transform.position = spawnNode.worldPosition;
         //Set array position to spawn node
-        currentGridPos = spawnNode.gridPosition;
+        MoveToNode(spawnNode.gridPosition);
 
         //set target position to current
         newPos = transform.position;
@@ -64,11 +67,23 @@ public class CharacterMove : MonoBehaviour
         //If this new grid position can be walked on
         if (levelInfo.IsTileWalkable(newGridPos))
         {
-            //Make the current grid position into this new position
-            currentGridPos = newGridPos;
+            //Move to new node
+            //Clear previous node
+            levelInfo.nodes[(int)currentGridPos.x, (int)currentGridPos.y].Clear();
+            //Set current node
+            MoveToNode(newGridPos);
 
             //Set target world position to that of the node at the new grid position
             newPos = levelInfo.GetTile(currentGridPos).worldPosition;
         }
+    }
+
+    public void MoveToNode(Vector2 nodePos)
+    {
+        //Set current node
+        currentGridPos = nodePos;
+        //Set new node occupancy
+        levelInfo.nodes[(int)currentGridPos.x, (int)currentGridPos.y].isOccupied = true;
+        levelInfo.nodes[(int)currentGridPos.x, (int)currentGridPos.y].occupyingGameObject = gameObject;
     }
 }

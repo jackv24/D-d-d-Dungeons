@@ -93,8 +93,12 @@ public class LevelInfo : MonoBehaviour
         //Make sure position is withing array bounds
         if (gridPos.x < nodes.GetLength(0) && gridPos.x >= 0 && gridPos.y < nodes.GetLength(1) && gridPos.y >= 0)
         {
+            //Can not walk on tile if it is occupied
+            if (GetTile(gridPos).isOccupied)
+                return false;
+
             //If tile is not blank, it is walkeable
-            if(GetTile(gridPos).type != TileNode.Type.Blank)
+            if (GetTile(gridPos).type != TileNode.Type.Blank)
                 return true;
         }
 
