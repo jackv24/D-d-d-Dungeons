@@ -8,6 +8,8 @@ public class CharacterMove : MonoBehaviour
         Up, Down, Left, Right, Stationary
     }
 
+    public bool isPlayer = false;
+
     public float moveSmoothing = 0.1f;
 
     public TileNode spawnNode = null;
@@ -25,7 +27,7 @@ public class CharacterMove : MonoBehaviour
         levelInfo = GameManager.instance.levelInfo;
 
         //Get spawn node if player, enemies are set when spawned
-        if(tag == "Player")
+        if(isPlayer)
             spawnNode = levelInfo.GetSpawnTile(TileNode.Type.PlayerSpawn);
 
         //Start character at spawn node
@@ -76,6 +78,10 @@ public class CharacterMove : MonoBehaviour
             //Set target world position to that of the node at the new grid position
             newPos = levelInfo.GetTile(currentGridPos).worldPosition;
         }
+
+        //If this controller is tht of the player, use a player turn
+        if(isPlayer)
+            GameManager.instance.UsePlayerTurn();
     }
 
     public void MoveToNode(Vector2 nodePos)

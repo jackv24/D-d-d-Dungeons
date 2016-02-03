@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public LevelInfo levelInfo;
+    public EnemyManager enemyManager;
 
     public GameObject player;
 
@@ -21,7 +22,17 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        enemyManager = GetComponent<EnemyManager>();
+
+        //If no player has been set, attempt to find one
         if (!player)
             player = GameObject.FindWithTag("Player");
+    }
+
+    //Called when the player peforms an action
+    public void UsePlayerTurn()
+    {
+        //Allow enemies to use their turns
+        enemyManager.UseEnemyTurns();
     }
 }
