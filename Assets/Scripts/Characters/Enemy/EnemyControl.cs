@@ -17,20 +17,24 @@ public class EnemyControl : MonoBehaviour
     {
         int direction = Random.Range(0, 4);
 
+        characterMove.Move(ConvertDirection(direction));
+    }
+
+    //Converts an integer value into a direction (Range: 0 - 3 inclusive)
+    CharacterMove.IsoDirection ConvertDirection(int direction)
+    {
         switch (direction)
         {
             case 0:
-                characterMove.Move(CharacterMove.IsoDirection.Down);
-                break;
+                return CharacterMove.IsoDirection.Down;
             case 1:
-                characterMove.Move(CharacterMove.IsoDirection.Right);
-                break;
+                return CharacterMove.IsoDirection.Right;
             case 2:
-                characterMove.Move(CharacterMove.IsoDirection.Up);
-                break;
+                return CharacterMove.IsoDirection.Up;
             case 3:
-                characterMove.Move(CharacterMove.IsoDirection.Left);
-                break;
+                return CharacterMove.IsoDirection.Left;
         }
+
+        return CharacterMove.IsoDirection.Stationary;
     }
 }

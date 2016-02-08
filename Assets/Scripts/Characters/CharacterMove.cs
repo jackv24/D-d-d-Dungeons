@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(CharacterAction))]
+
 public class CharacterMove : MonoBehaviour
 {
     public enum IsoDirection
@@ -20,11 +22,14 @@ public class CharacterMove : MonoBehaviour
     private Vector3 newPos;
 
     private LevelInfo levelInfo;
+    private CharacterAction characterAction;
 
     void Start()
     {
         //Get reference to level info from the game manager
         levelInfo = GameManager.instance.levelInfo;
+
+        characterAction = GetComponent<CharacterAction>();
 
         //Get spawn node if player, enemies are set when spawned
         if(isPlayer)
@@ -67,9 +72,8 @@ public class CharacterMove : MonoBehaviour
             newGridPos = new Vector2(currentGridPos.x + 1, currentGridPos.y);
 
         //If this new grid position can be walked on
-        if (levelInfo.IsTileWalkable(newGridPos))
+        if (levelInfo.IsTileWalkable(newGridPos) && !levelInfo.GetTile(newGridPos).isOccupied)
         {
-            //Move to new node
             //Clear previous node
             levelInfo.nodes[(int)currentGridPos.x, (int)currentGridPos.y].Clear();
             //Set current node
@@ -77,11 +81,13 @@ public class CharacterMove : MonoBehaviour
 
             //Set target world position to that of the node at the new grid position
             newPos = levelInfo.GetTile(currentGridPos).worldPosition;
-        }
 
-        //If this controller is tht of the player, use a player turn
-        if(isPlayer)
-            GameManager.instance.UsePlayerTurn();
+            //If this controller is that of the player, use a player turn
+            if (isPlayer)
+                GameManager.instance.UsePlayerTurn();
+        }
+        else
+            characterAction.Attack(dir);
     }
 
     public void MoveToNode(Vector2 nodePos)
