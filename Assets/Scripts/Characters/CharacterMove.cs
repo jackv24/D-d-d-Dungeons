@@ -23,6 +23,7 @@ public class CharacterMove : MonoBehaviour
 
     private LevelInfo levelInfo;
     private CharacterAction characterAction;
+    private CharacterAnimation characterAnimation;
 
     void Start()
     {
@@ -30,6 +31,7 @@ public class CharacterMove : MonoBehaviour
         levelInfo = GameManager.instance.levelInfo;
 
         characterAction = GetComponent<CharacterAction>();
+        characterAnimation = GetComponent<CharacterAnimation>();
 
         //Get spawn node if player, enemies are set when spawned
         if(isPlayer)
@@ -71,7 +73,7 @@ public class CharacterMove : MonoBehaviour
         else if (dir == IsoDirection.Right)
             newGridPos = new Vector2(currentGridPos.x + 1, currentGridPos.y);
 
-        //If this new grid position can be walked on
+        //If this new grid position can be walked on, and isn't occupied
         if (levelInfo.IsTileWalkable(newGridPos) && !levelInfo.GetTile(newGridPos).isOccupied)
         {
             //Clear previous node
@@ -85,6 +87,10 @@ public class CharacterMove : MonoBehaviour
             //If this controller is that of the player, use a player turn
             if (isPlayer)
                 GameManager.instance.UsePlayerTurn();
+
+            //If there is a character animation script attached, call the step animation
+            if (characterAnimation)
+                characterAnimation.Step();
         }
         else
             characterAction.Attack(dir);
